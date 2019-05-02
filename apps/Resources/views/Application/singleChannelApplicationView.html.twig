@@ -1,0 +1,67 @@
+{% if application.name == "Social Login" %}
+	{{ include('WebkulAppBundle:Templates:socialLoginTemplate.html.twig') }}
+{% elseif application.name == "Disqus Engage" %}
+	{{ include('WebkulAppBundle:Templates:disqusEngageTemplate.html.twig') }}
+{% elseif application.name == "Seller Buyer Chat" %}
+	{{ include('WebkulAppBundle:Templates:sellerBuyerChatTemplate.html.twig') }}
+	<script src="https://js.braintreegateway.com/js/braintree-2.30.0.min.js"></script>
+{% elseif application.name == "Magento SSO" %}
+	{{ include('WebkulAppBundle:Templates:magentoSSOTemplate.html.twig') }}
+{% elseif application.name == "Magento 2 SSO" %}
+	{{ include('WebkulAppBundle:Templates:magento2SSOTemplate.html.twig') }}
+{% elseif application.name == "Wordpress SSO" %}
+	{{ include('WebkulAppBundle:Templates:wordpressSSOTemplate.html.twig') }}
+{% elseif application.name == "Opencart SSO" %}
+	{{ include('WebkulAppBundle:Templates:opencartSSOTemplate.html.twig') }}
+{% elseif application.dependencyName == "uvdesk helpdesk" %}
+	{{ include('@UVDeskCore//Application//ecommerceHelpdeskTemplate.html.twig') }}
+{% else %}
+	<script type="text/template" id="app-splash-template"></script>
+	<script type="text/template" id="channel-form-template"></script>
+{% endif %}
+
+<script type="text/javascript">
+	var ChannelModel = Backbone.Model.extend({
+		idAttribute: "id",
+		validation: {
+			{% if formFields is defined %}
+				'title': {
+					required: true,
+					msg: '{{ "This field is mandatory"|trans }}',
+				},
+				{% for field in formFields %}
+					'{{ field.name }}': {
+						required: true,
+						msg: '{{ "This field is mandatory"|trans }}',
+					},
+				{% endfor %}
+			{% endif %}
+		}
+	});
+
+	var ChannelCollection = Backbone.Collection.extend({
+		model: ChannelModel,
+		url: "{{ path('app_fetch_application_collection', {'applicationRouteName': app.request.get('applicationRouteName') }) }}",
+		syncData : function() {
+			app.appView.showLoader();
+			this.fetch({
+				reset: true,
+				success: function(collection, response) {
+					applicationPlatformView = new ApplicationPlatformView({
+						model: collection
+					});
+					applicationPlatformView.render();
+					app.appView.hideLoader();
+				},
+				error: function (response) {
+					app.appView.hideLoader();
+					console.log('error:', response);
+				}
+			});
+		},
+	});
+
+	$(function () {
+		channelCollection = new ChannelCollection();
+	});
+</script>

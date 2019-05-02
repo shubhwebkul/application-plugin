@@ -1,0 +1,39 @@
+<script type="text/template" id="configuration-template">
+	<div class="uv-app-splash" style="text-align: center;">
+		{% if application.name == "Joomla Helpdesk" %}
+			{% set gitAsset = 'https://github.com/uvdesk/joomla' %}
+			{% set splashAsset = asset("bundles/webkuldefault/images/apps/joomla-helpdesk-splash.png") %}
+		{% elseif application.name == "Opencart Helpdesk" %}
+			{% set gitAsset = 'https://github.com/uvdesk/opencart' %}
+			{% set splashAsset = asset("bundles/webkuldefault/images/apps/opencart-helpdesk-splash.png") %}
+		{% elseif application.name == "Magento 2 Helpdesk" %}
+			{% set gitAsset = 'https://github.com/uvdesk/magento' %}
+			{% set splashAsset = asset("bundles/webkuldefault/images/apps/magento2-helpdesk-splash.png") %}
+		{% elseif application.name == "Wordpress Helpdesk" %}
+			{% set gitAsset = 'https://github.com/uvdesk/wordpress' %}
+			{% set splashAsset = asset("bundles/webkuldefault/images/apps/wordpress-helpdesk-splash.png") %}
+		{% elseif application.name == "Prestashop Helpdesk" %}
+			{% set gitAsset = 'https://github.com/uvdesk/prestashop' %}
+			{% set splashAsset = asset("bundles/webkuldefault/images/apps/prestashop-helpdesk-splash.png") %}
+		{% else %}
+			{% set gitAsset = '' %}
+			{% set splashAsset = '' %}
+		{% endif %}
+
+		<img class="uv-app-splash-image" src="{{ splashAsset }}" alt="{{ application.name }}">
+		<h2 class="uv-margin-top-10">{{ application.name|trans }}</h2>
+		<p>{{ "Integrate your UVDesk Helpdesk System with your ecommerce store" }}</p>
+		<a href="{{ gitAsset }}" target="_blank" class="uv-btn">{{ 'View it on Git' }}</a>
+	</div>
+</script>
+
+<script type="text/javascript">
+	var ApplicationPlatformView = Backbone.View.extend({
+		el: $('#configure > .uv-app-screen'),
+		configurationTemplate: _.template($('#configuration-template').html()),
+		events: {},
+		render: function() {
+			this.$el.html(this.configurationTemplate());
+		},
+	});
+</script>

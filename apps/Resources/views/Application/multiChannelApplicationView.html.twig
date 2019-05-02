@@ -1,0 +1,401 @@
+{% set FeedbackChannel =  ['EBay', 'Disqus Engage'] %}
+{% set CustomApps =  ['SLA'] %}
+
+{% if application.name == "Facebook" %}
+	{{ include('WebkulAppBundle:Templates:facebookTemplate.html.twig') }}
+{% elseif application.name == "Twitter" %}
+	{{ include('WebkulAppBundle:Templates:twitterTemplate.html.twig') }}
+{% elseif application.name == "Seller Buyer Chat" %}
+	{{ include('WebkulAppBundle:Templates:sellerBuyerChatTemplate.html.twig') }}
+	<script src="https://js.braintreegateway.com/js/braintree-2.30.0.min.js"></script>
+{% elseif application.name == "Form Builder" %}
+	{{ include('WebkulAppBundle:Templates:formbuilderTemplate.html.twig') }}
+{% elseif application.name == "Binaka" %}
+	{{ include('WebkulAppBundle:Templates:knockKnockTemplate.html.twig') }}
+{% elseif application.name == "Amazon Seller Central Messaging" %}
+	{{ include('WebkulAppBundle:Templates:amazonMessagingTemplate.html.twig') }}
+{% elseif application.name == "Mercadolibre Messaging" %}
+	{{ include('WebkulAppBundle:Templates:mercadolibreMessagingTemplate.html.twig') }}
+{% elseif application.name == "Google Calendar" %}
+	{{ include('WebkulAppBundle:Templates:googleCalendarTemplate.html.twig') }}
+{% elseif application.name == "Translate Content" %}
+	{{ include('WebkulAppBundle:Templates:translateContentTemplate.html.twig') }}
+{% elseif application.name == "EBay" %}
+	{{ include('@UVDeskCore/Application/Templates/ebayTemplate.html.twig') }}
+{% elseif application.name == "Disqus Engage" %}
+	{{ include('WebkulAppBundle:Templates:disqusEngageTemplate.html.twig') }}
+{% elseif application.name == "Youtube" %}
+	{{ include('WebkulAppBundle:Templates:youtubeTemplate.html.twig') }}
+{% elseif application.dependencyName == "shopify extension" %}
+	{{ include('WebkulAppBundle:Templates:shopifyHelpdeskTemplate.html.twig') }}
+{% elseif application.dependencyName == "ecommerce" %}
+	{{ include('@UVDeskCore/Application/ecommerceTemplate.html.twig') }}
+{% elseif application.dependencyName == "sso" %}
+	{{ include('WebkulAppBundle:Templates:ssoTemplate.html.twig') }}
+{% elseif application_service.checkTemplateExists( application.name|slice(0,1)|lower ~ application.name|title|slice(1)|replace({' ':''}) ~ 'Template.html.twig' ) %}
+	{{ include('WebkulAppBundle:Templates:'~application.name|slice(0,1)|lower ~ application.name|title|slice(1)|replace({' ':''}) ~ 'Template.html.twig') }}
+{% else %}
+	<script type="text/template" id="app-splash-template">
+	</script>
+	<script type="text/template" id="channel-form-template">
+	</script>
+{% endif %}
+
+{% if application.name not in FeedbackChannel %}
+	<script type="text/template" id="channel-setting-template"></script>
+{% endif %}
+
+{% if application.name not in CustomApps %}
+	<script type="text/template" id="channel-list-template">
+		<div class="uv-app-list-channels">
+			{% if (application.name == 'Form Builder') %}
+				<div class="uv-app-list-action">
+					<div class="uv-app-list-action-lt"><h1>{{ 'Forms'|trans }}</h1></div>
+					<div class="uv-app-list-action-rt"><a class="uv-btn-action add-app-channel" href="#">{{ 'New Form'|trans }}</a></div>
+				</div>
+			{% else %}
+				<div class="uv-app-list-action">
+					<div class="uv-app-list-action-lt"><h1>{{ 'Added Channels'|trans }}</h1></div>
+					{% if (application.name == 'Seller Buyer Chat') %}
+						<div class="uv-app-list-action-rt"><a class="uv-btn-action add-app-channel" href="#" disabled="disabled">{{ 'New Channel'|trans }}</a></div>
+					{% else %}
+						{% if (application.name == 'Shopify Helpdesk') %}
+							<div class="uv-app-list-action-rt"><a class="uv-btn-action add-app-channel" href="#">{{ 'Add Store'|trans }}</a></div>
+						{% else %}
+							<div class="uv-app-list-action-rt"><a class="uv-btn-action add-app-channel" href="#">{{ 'New Channel'|trans }}</a></div>
+						{% endif %}
+					{% endif %}
+				</div>
+			{% endif %}
+			<div id="channel-list">
+			</div>
+		</div>
+	</script>
+
+	<script type="text/template" id="channel-template">
+		<div class="uv-app-list-brick-lt uv-amazon-color">
+			<span class="uv-channel-count">#<%= parseInt(document.getElementsByClassName('uv-app-list-brick').length)+1 %></span>
+		</div>
+		<div class="uv-app-list-brick-rt">
+			<p><%- title %></p>
+			<p>
+				{% if (application.name == 'Form Builder') %}
+					<span class="uv-app-list-flag-active">{{'Active'|trans }}</span>
+				{% else %}
+					<% if(isActive) { %>
+						<span class="uv-app-list-flag-active">{{'Active'|trans }}</span>
+					<% } else { %>
+						<span class="uv-app-list-flag-inactive">{{ 'Inactive'|trans }}</span>
+					<% } %>
+				{% endif %}
+			</p>
+			<div class="uv-app-list-actions" {% if application.name == 'Twitter' %} data-channel="<% print(id) %>" {% endif %}>
+				{% if application.name == 'Twitter' %}
+					<a href class="toggle-channel"><% if(isActive) { %>{{ 'Disable'|trans }}<% } else { %>{{ 'Enable'|trans }}<% } %></a>
+					<a href class="uv-delete delete-channel">{{ 'Delete'|trans }}</a>
+				{% elseif application.name == 'Youtube' %}
+					<a href class="uv-delete delete-channel">{{ 'Delete'|trans }}</a>
+				{% else %}
+					{% if application.name in FeedbackChannel or application.name == "Form Builder" %}
+						<!-- Feedback Channel or Form Builder -->
+						<a href class="edit-channel">{{ 'Edit'|trans }}</a>
+						<a href class="edit-settings">{{ 'Settings'|trans }}</a>
+						<a href class="uv-delete delete-channel">{{ 'Delete'|trans }}</a>
+					{% else %}
+						<a href class="edit-channel">{{ 'Edit'|trans }}</a>
+						<a href class="uv-delete delete-channel">{{ 'Delete'|trans }}</a>
+					{% endif %}
+				{% endif %}
+			</div>
+		</div>
+	</script>
+{% endif %}
+
+<script type="text/javascript">
+	{% if application.dependencyName != 'snippet' %}
+		var ChannelModel = Backbone.Model.extend({
+			idAttribute: "id",
+			validation: {
+				{% if formFields is defined %}
+					{% if application.dependencyName != "shopify extension" %}
+						'title': {
+							required: true,
+							msg: '{{ "This field is mandatory"|trans }}',
+						},
+					{% endif %}
+					{% for field in formFields %}
+						'{{ field.name }}': {
+							required: true,
+							msg: '{{ "This field is mandatory"|trans }}',
+						},
+					{% endfor %}
+				{% endif %}
+			}
+		});
+
+		var ChannelCollection = Backbone.Collection.extend({
+			model: ChannelModel,
+			url: "{{ path('app_fetch_application_collection', {'applicationRouteName': app.request.get('applicationRouteName') }) }}",
+			syncData : function() {
+				app.appView.showLoader();
+				this.fetch({
+					reset: true,
+					success: function(collection, response) {
+						if (typeof(channelListView) == 'undefined') {
+							channelListView = new ChannelListView();
+						}
+						channelListView.render(collection);
+						app.appView.hideLoader();
+					},
+					error: function (response) {
+						app.appView.hideLoader();
+					}
+				});
+			},
+		});
+
+		var ChannelListView = Backbone.View.extend({
+			el: $('#configure>.uv-app-screen'),
+			appSplashTemplate: _.template($('#app-splash-template').html()),
+			channelListTemplate: _.template($('#channel-list-template').html()),
+			channelListSelector: '#channel-list',
+			events: {
+				'click .add-app-channel': 'addChannelView',
+			},
+			render: function(channelCollection) {
+				if (channelCollection.length) {
+					this.$el.html(this.channelListTemplate());
+					_.each(channelCollection.models, function (item) {
+						this.renderChannel(item);
+					}, this);
+				}  else {
+					this.$el.html(this.appSplashTemplate());
+				}
+			},
+			renderChannel: function(item) {
+				var channelView = new ChannelView({
+					model: item
+				});
+				$(this.channelListSelector).append(channelView.render().el);
+			},
+			addChannelView: function(e) {
+				channelForm.model.clear();
+				channelForm.render();
+				$('.uv-aside-back').addClass('edit-back');
+			},
+		});
+
+		var ChannelView = Backbone.View.extend({
+			template : _.template($('#channel-template').html()),
+			tagName: 'div',
+			className: 'uv-app-list-brick',
+			events: {
+				'click .edit-channel' : 'editChannel',
+				'click .edit-settings' : 'editSettings',
+				'click .delete-channel' : 'confirmRemove',
+			},
+			initialize: function() {},
+			render: function() {
+				this.$el.html(this.template(this.model.toJSON()));
+				return this;
+			},
+			editChannel: function(e) {
+				e.preventDefault();
+				item = this.model;
+
+				channelForm.model.clear().set(this.model.toJSON());
+				channelForm.render();
+				$('.uv-aside-back').addClass('edit-back');
+			},
+			editSettings: function(e) {
+				e.preventDefault();
+				item = this.model;
+
+				channelSetting.model.clear().set(this.model.toJSON());
+				{% if application.name == "Form Builder" %}
+					channelSetting.render("updateFormFields");
+				{% else %}
+					channelSetting.render();
+				{% endif %}
+				$('.uv-aside-back').addClass('edit-back');
+			},
+			confirmRemove: function(e) {
+				e.preventDefault();
+				app.appView.openConfirmModal(this);
+			},
+			removeItem : function (e) {
+				app.appView.showLoader();
+				self = this;
+				deleteUrl = "{{ path('app_remove_application_channel') }}";
+				deleteUrl = deleteUrl.replace('replaceId', this.model.get('id'));
+				this.model.destroy({
+					url : deleteUrl,
+					success : function (model, response, options) {
+						app.appView.hideLoader();
+						globalMessageResponse = response;
+						channelCollection.syncData();
+						app.appView.renderResponseAlert(response);
+					},
+					error: function (model, xhr, options) {
+						if(url = xhr.getResponseHeader('Location'))
+							window.location = url;
+						var response = warningResponse;
+						if(xhr.responseJSON)
+							response = xhr.responseJSON;
+
+						app.appView.hideLoader();
+						app.appView.renderResponseAlert(response);
+					}
+				});
+			},
+		});
+
+		{# for custom apps define all required jsView, template in their template file #}
+		{% if application.name not in CustomApps %}
+			var ChannelFormView = Backbone.View.extend({
+				el: $('#configure>.uv-app-screen'),
+				ChannelFormTemplate: _.template($('#channel-form-template').html()),
+				events: {
+					'blur input': 'formChanged',
+					'change select': 'formChanged',
+					'click #save-channel': 'submitForm',
+				{% if (application.name == 'Form Builder') %}
+					'click .embed_code': 'showEmbedCode',
+					'click .preview_form': 'previewForm'
+				{% endif %}
+				},
+				render: function(value) {
+					Backbone.Validation.bind(this);
+					$('.uv-app-add-channel').remove();
+					$('.uv-app-splash').hide();
+					$('.uv-app-list-channels').hide();
+					var currentTemplate, modelJson;
+					$(this.el).append(currentTemplate = this.ChannelFormTemplate(modelJson = this.model.toJSON()));
+					{% if (application.name == 'Binaka') %}
+						if(modelJson.url){
+							let articleData;
+							$.each(modelJson.url, function(key, value){
+								articleData = {
+									'url': value,
+									'article': modelJson.article[key],
+								};
+								knockKnockView.addUrlBoxWithItem(articleData, currentTemplate);
+							});
+						}
+						knockKnockView.colorPicker();
+					{% endif %}
+					this.activateTabs();
+					if(typeof(this.AddChecked) == 'function') {
+						this.AddChecked();
+					}
+				},
+				activateTabs: function() {
+					$('.uv-box-tab ul li a').on('click', function(e){
+						e.preventDefault();
+						$('.uv-box-tab ul li a').removeClass('uv-box-tab-active');
+						$(this).addClass('uv-box-tab-active')
+
+						$('.uv-tab-view .uv-tab-view').removeClass('uv-tab-view-active');
+						$('#'+$(this).attr('data-href')).addClass('uv-tab-view-active')
+					});
+				},
+				formChanged: function(e) {
+					this.model.set(Backbone.$(e.currentTarget).attr('name'), Backbone.$(e.currentTarget).val())
+					this.model.isValid([Backbone.$(e.currentTarget).attr('name')])
+				},
+				submitForm: function(e) {
+					e.preventDefault();
+
+					form = $(e.target).closest('form');
+					this.model.set(form.serializeObject());
+					if (this.model.isValid(true)) {
+						$(e.target).attr('disabled', 'disabled');
+						url = "{{ path('app_save_application_channel', {'applicationRouteName': app.request.get('applicationRouteName') }) }}";
+						if(this.model.id) {
+							url += '/'+this.model.id;
+						}
+						form.attr("action", url);
+						form.submit();
+					}
+				},
+				{% if (application.name == 'Form Builder') %}
+					embedTemplate: _.template($('#embed-modal-temp').html()),
+					previewTemplate: _.template($('#preview-form-temp').html()),
+					showEmbedCode: function() {
+						var hash = this.model.toJSON().hash;
+						if(hash) {
+							path ="{{ absolute_url(path('formbuilder_return_form_action', {'hash': 'replaceHash' })) }}";
+							iframe_path ="{{ absolute_url(path('formbuilder_return_html_form_action', {'hash': 'replaceHash' })) }}";
+							path = path.replace('replaceHash', hash);
+							iframe_path = iframe_path.replace('replaceHash', hash);
+							$('#modal-area').html(this.embedTemplate({ "hash": hash, "path": path, "iframe_path": iframe_path }));
+
+							$('.uv-tabs li').on('click', function() {
+								if(!$(this).hasClass('uv-tab-ellipsis') && !$(this).parents('li').hasClass('uv-tab-ellipsis')) {
+									$(this).siblings('.uv-tabs li').removeClass('uv-tab-active');
+									$(this).addClass('uv-tab-active');
+									$(this).siblings('.uv-tab-view').removeClass('uv-tab-view-active')
+									$('#' + $(this).attr('for')).addClass('uv-tab-view-active')
+									$('#' + $(this).attr('for')).siblings('.uv-tab-view').removeClass('uv-tab-view-active')
+								}
+							});
+							this.StartCopyListener();
+						}
+					},
+					previewForm: function() {
+						hash = this.model.get('hash');
+						if(hash) {
+							path ="{{ absolute_url(path('formbuilder_return_html_form_action', {'hash': 'replaceHash' })) }}";
+							path = path.replace('replaceHash', hash);
+							$('#modal-area').html(this.previewTemplate({ "title": this.model.get('title'), "hash": hash, "iframe_path": path }));
+
+							$("iframe").load( function () {
+								$('#modal-area .uv-loader').remove();
+								var c = (this.contentWindow || this.contentDocument);
+								if (c.document) d = c.document;
+								$(this).css({
+									height: $(d).find('form').outerHeight()+70
+								});
+							});
+						}
+					},
+					StartCopyListener: function() {
+						$(".uv-copy-button").on("click", function(e) {
+							copyBtn = $(e.target);
+							if(copyInput = document.querySelector("#" + copyBtn.attr('data-copy-target'))) {
+								success = app.appView.copyToClipboard(copyInput);
+								if(success) {
+									prevHtml = copyBtn.html();
+									copyBtn.html('Copied');
+									copyBtn.addClass('uv-success');
+									setTimeout(function() {
+										copyBtn.html(prevHtml);
+										copyBtn.removeClass('uv-success');
+									},1000);
+								}
+							}
+						});
+					},
+					AddChecked: function() {
+						_.each(this.model.toJSON().formFields , function(obj) {
+							$('input[type=checkbox]').filter('[value='+obj.id+']').prop('checked',true);
+						});
+					},
+				{% endif %}
+
+			});
+		{% endif %}
+
+		$(function () {
+			channelCollection = new ChannelCollection();
+			{% if application.name in CustomApps %}
+				channelForm = new ChannelFormView({model: new SlaModel});
+			{% else %}
+				channelForm = new ChannelFormView({model: new ChannelModel});
+			{% endif %}
+			{% if application.name in FeedbackChannel or application.name == "Form Builder" %}
+				channelSetting = new ChannelSettingView({model: new ChannelModel});
+			{% endif %}
+		});
+	{% endif %}
+</script>

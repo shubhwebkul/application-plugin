@@ -1,0 +1,428 @@
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
+
+{% block title %}
+	{{ application.name|title }} {{ 'App'|trans }}
+{% endblock %}
+
+{% block pageContent %}
+	<style>
+		.upgrade-plan-message {
+			{# margin: 0 0 0 -17.6%; #}
+			margin: 0;
+		}
+		.uv-app-screenshots-canvas {
+			position: relative;
+		}
+		.uv-app-video {
+			position: absolute;
+			width: 600px;
+			height: 320px;
+			background-color: rgba(0, 0, 0, 0.7);
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		.uv-app-video.loading.opened {
+			background-color: #eee;
+		}
+		.uv-app-video .uv-loader {
+			left: 278px;
+			top: 130px;
+			display: none;
+		}
+		.uv-app-video.loading.opened .uv-loader {
+			display: block;
+		}
+		.uv-app-video video {
+			width: 600px;
+			height: 320px;
+		}
+		.uv-app-video .uv-play-btn {
+			padding: 115px 258px;
+		}
+		.uv-close-video {
+			position: absolute;
+			top: 5px;
+			right: 5px;
+			padding: 15px;
+		}
+		video::-internal-media-controls-download-button {
+			display:none;
+		}
+		video::-webkit-media-controls-enclosure {
+			overflow:hidden;
+		}
+		video::-webkit-media-controls-panel {
+			width: calc(100% + 30px); /* remove download btn */
+		}
+	</style>
+	{# Inner Section #}
+	<div class="uv-inner-section">
+		{# Aside #}
+
+    {{ include('@UVDeskCore/Templates/panel-sidebar.html.twig') }}
+
+		{# View #}
+		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
+			<h1>{{ application.name|trans }}</h1>
+			{# Tabs #}
+			<div class="uv-tabs">
+				<ul>
+					<li for="overview" {% if activeTab == 'overview' or activeTab == '' %}class="uv-tab-active"{% endif %}>{{ 'Overview'|trans }}</li>
+					{% if screenshots|length %}
+						<li for="screenshot" {% if activeTab == 'screenshot' %}class="uv-tab-active"{% endif %}>{{ 'Screenshots'|trans }}</li>
+					{% endif %}
+					<li for="documentation" {% if activeTab == 'documentation' %}class="uv-tab-active"{% endif %}>{{ 'Documentation'|trans }}</li>
+					{% if application.dependencyName != 'snippet' %}
+						{% if application.dependencyName == 'uvdesk helpdesk' %}
+							<li for="configure" {% if activeTab == 'configure' %}class="uv-tab-active"{% endif %}>{{ 'Configure'|trans }}</li>
+						{% else %}
+							<li for="configure" {% if activeTab == 'configure' %}class="uv-tab-active"{% endif %} {% if not(application.isInstalled) %}style="display: none;"{% endif %}>{{ 'Configure'|trans }}</li>
+						{% endif %}
+					{% endif %}
+				</ul>
+			</div>
+
+			{# Tab View - Overview #}
+			<div id="overview" class="uv-tab-view {% if (activeTab == 'overview' or activeTab == '') or not(application.isInstalled) or not(application.isActive) %}uv-tab-view-active{% endif %}">
+				<div class="uv-app-bar">
+					<div class="uv-app-view-logo">
+						<img src="{{ application.banner }}" alt="{{ application.name|trans }}">
+					</div>
+					<div class="uv-app-view-content">
+						<div class="uv-app-view-header">
+							<h4>{{ application.name|trans }}</h4>
+							<p>{{ application.about|trans }}</p>
+							<p><span>{{ 'Released'|trans }}:</span> <time datetime="{{ application.createdAt | date('F d, Y')}}">{{ application.createdAt | date('F d, Y')}}</time></p>
+							{% if application.name == "Seller Buyer Chat" %}
+								<span class="uv-app-price">{{ 'Premium'|trans }}</span>
+							{% else %}
+								<span class="uv-app-price">{{ 'Free'|trans }}</span>
+							{% endif %}
+							<div class="uv-action-buttons">
+								{% if application.dependencyName != 'uvdesk helpdesk' %}
+									{% if application.isInstalled == true %}
+										<a class="uv-btn-small uv-install-toggle uv-btn-uninstall" href="#">{{ 'Uninstall'|trans }}</a>
+									{% else %}
+										<a class="uv-btn-small uv-install-toggle uv-btn-install" href="#">{{ 'Install'|trans }}</a>
+									{% endif %}
+								{% endif %}
+							</div>
+						</div>
+						<div class="uv-app-view-section">
+							{{ application.overview|raw }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{# Tab View - Screenshot #}
+			<div id="screenshot" class="uv-tab-view {% if activeTab == 'screenshot' %}uv-tab-view-active{% endif %}">
+				<div class="uv-app-bar">
+					<div class="uv-app-view-logo">
+						<img src="{{ application.banner }}" alt="{{ application.name|trans }}">
+					</div>
+					<div class="uv-app-view-content">
+						<div class="uv-app-view-header">
+							<h4>{{ application.name|trans }}</h4>
+							<p>{{ application.about|trans }}</p>
+							<p><span>{{ 'Released'|trans }}:</span> <time datetime="{{ application.createdAt | date('F d, Y')}}">{{ application.createdAt | date('F d, Y')}}</time></p>
+							{% if application.name == "Seller Buyer Chat" %}
+								<span class="uv-app-price">{{ 'Premium'|trans }}</span>
+							{% else %}
+								<span class="uv-app-price">{{ 'Free'|trans }}</span>
+							{% endif %}
+							<div class="uv-action-buttons">
+								{% if application.dependencyName != 'uvdesk helpdesk' %}
+									{% if application.isInstalled == true %}
+										<a class="uv-btn-small uv-install-toggle uv-btn-uninstall" href="#">{{ 'Uninstall'|trans }}</a>
+									{% else %}
+										<a class="uv-btn-small uv-install-toggle uv-btn-install" href="#">{{ 'Install'|trans }}</a>
+									{% endif %}
+								{% endif %}
+							</div>
+						</div>
+						<div class="uv-app-view-section">
+							<div class="uv-app-screenshots-wrapper" id="beauty-scroll">
+								<div class="uv-app-screenshots-canvas">
+									{% if screenshots is defined and screenshots is iterable %}
+										{% for key, screenshot in screenshots %}
+											<div class="uv-app-screenshot">
+												<img src="{{ screenshot.url }}">
+											</div>
+
+											{% if key == 0 %}
+												{% if videos is defined and videos is iterable %}
+													<div class="uv-app-video">
+														{# {% image '@WebkulDefaultBundle/Resources/public/images/play-button.png' %}
+															<img src="{{ asset_url }}" alt="view" class="uv-play-btn">
+														{% endimage %} #}
+														<div class="uv-video-wrapper" style="display: none;">
+															<div class="uv-loader">
+																<span></span>
+																<span></span>
+																<span></span>
+															</div>
+															<video class="embed-responsive-item" loop="1" controls="controls" controlsList="nodownload" preload="none">
+																{% for video in videos %}
+																	<source src="{{ video.url }}" type="{{ video.type }}">
+																{% endfor %}
+																{{ 'Your browser does not support the video tag.'|trans }}
+															</video>
+															{# {% image '@WebkulDefaultBundle/Resources/public/images/close.png' %}
+																<img src="{{ asset_url }}" alt="hide" class="uv-close-video">
+															{% endimage %} #}
+														</div>
+													</div>
+												{% endif %}
+											{% endif %}
+										{% endfor %}
+									{% endif %}
+								</div>
+							</div>
+							<p>**{{ 'All Logos and Color Schema are owned by their respective owners'|trans }}</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			{# Tab View - Documentation #}
+			<div id="documentation" class="uv-tab-view {% if activeTab == 'documentation' %}uv-tab-view-active{% endif %}">
+				<div class="uv-app-bar">
+					<div class="uv-app-view-logo">
+						<img src="{{ application.banner }}" alt="{{ application.name }}">
+					</div>
+					<div class="uv-app-view-content">
+						<div class="uv-app-view-header">
+							<h4>{{ application.name|trans }}</h4>
+							<p>{{ application.about|trans }}</p>
+							<p><span>{{ 'Released'|trans }}:</span> <time datetime="{{ application.createdAt | date('F d, Y')}}">{{ application.createdAt | date('F d, Y')}}</time></p>
+							{% if application.name == "Seller Buyer Chat" %}
+								<span class="uv-app-price">{{ 'Premium'|trans }}</span>
+							{% else %}
+								<span class="uv-app-price">{{ 'Free'|trans }}</span>
+							{% endif %}
+							<div class="uv-action-buttons">
+								{% if application.dependencyName != 'uvdesk helpdesk' %}
+									{% if application.isInstalled == true %}
+										<a class="uv-btn-small uv-install-toggle uv-btn-uninstall" href="#">{{ 'Uninstall'|trans }}</a>
+									{% else %}
+										<a class="uv-btn-small uv-install-toggle uv-btn-install" href="#">{{ 'Install'|trans }}</a>
+									{% endif %}
+								{% endif %}
+							</div>
+						</div>
+						<div class="uv-app-view-section">
+							<h3>{{ 'Configuring your application:'|trans }}</h3>
+							{{ application.instruction|raw }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{% if application.dependencyName != 'snippet' %}
+				{# Tab View - Configure #}
+				<div id="configure" class="uv-tab-view {% if (activeTab == 'configure') and application.isInstalled and application.isActive %}uv-tab-view-active{% endif %}">
+					<div class="uv-app-screen">
+					</div>
+				</div>
+			{% endif %}
+		</div>
+		<div id="modal-area">
+		</div>
+	</div>
+	{# Inner Section #}
+{% endblock %}
+
+{% block footer %}
+	{{ parent() }}
+
+	{% set isSingleChannel =  (application.name in ['Social Login', 'Magento SSO', 'Magento 2 SSO', 'Wordpress SSO', 'Opencart SSO', 'Seller Buyer Chat'] or application.dependencyName == 'uvdesk helpdesk') ? true : false  %}
+	{% if isSingleChannel %}
+		{{ include('@UVDeskCore//Application//singleChannelApplicationView.html.twig') }}
+	{% else %}
+		{{ include('@UVDeskCore//Application//multiChannelApplicationView.html.twig') }}
+	{% endif %}
+
+	<script>
+		//ScreenShots Scroll
+		var uvAppScreenshotsCanvas = document.querySelector(".uv-app-screenshots-canvas");
+		var uvAppScreenshot = document.querySelectorAll(".uv-app-screenshot");
+		if (uvAppScreenshot.length >= 1) {
+			uvAppScreenshotsCanvas.style.width = (uvAppScreenshot.length * 625) + 50 + "px";
+		}
+
+		$('.uv-app-view-section #beauty-scroll').bind('mousewheel', function(e) {
+			var target = $(this);
+			var maxScroll = target.prop('scrollWidth') - target.width()
+			if((target.scrollLeft() && e.originalEvent.wheelDelta/120 > 0) || ((target.scrollLeft() <= maxScroll ) && e.originalEvent.wheelDelta/120 < 0)) {
+				target.scrollLeft(e.originalEvent.wheelDelta /120 > 0 ? target.scrollLeft() - 30 : target.scrollLeft() + 30 );
+				e.preventDefault();
+			}
+		});
+
+		// backbone
+		var ApplicationModel = Backbone.Model.extend({
+			idAttribute : "id",
+			defaults: {
+				id: {{ application.id }},
+				installed: {{ application.isInstalled ? 1 : 0 }},
+			}
+		});
+
+		var ApplicationView = Backbone.View.extend({
+			el : $('body'),
+			events : {
+				'click .uv-btn-install' : "installApplication",
+				'click .uv-btn-uninstall' : "uninstallApplication",
+				'click .uv-enable-app': 'enableApp',
+				'click li[for="configure"]': 'switchToListView',
+				'click .cancel-form': 'switchToListView',
+				'click .uv-aside-back.edit-back': 'switchToListView',
+				'click .uv-app-video .uv-play-btn': 'showVideo',
+				'click .uv-close-video': 'hideVideo',
+			},
+			initialize: function() {
+				{% if application.dependencyName == 'uvdesk helpdesk' or application.dependencyName == 'shopify extension' %}
+					this.renderConfigurationView();
+				{% elseif application.isInstalled %}
+					this.renderConfigurationView();
+				{% endif %}
+
+				$('.uv-app-video video').on('loadstart', function (event) {
+					$(this).closest('.uv-app-video').addClass('loading');
+				});
+				$('.uv-app-video video').on('canplay', function (event) {
+					$(this).closest('.uv-app-video').removeClass('loading');
+				});
+			},
+			installApplication: function(e) {
+				e.preventDefault();
+				app.appView.showLoader();
+				$('.uv-install-toggle').attr('disabled', 'disabled');
+				self = this;
+				this.model.save({id: this.model.id }, {
+					patch: true,
+					url : "{{ path('helpdesk_member_install_application_xhr') }}",
+					success: function(application, response, options) {
+						$('.uv-install-toggle').attr('disabled', false)
+							.addClass('uv-btn-uninstall')
+							.removeClass('uv-btn-install')
+							.html("{{ 'Uninstall'|trans }}");
+
+						$('li[for="configure"]').fadeIn();
+						self.renderConfigurationView();
+						app.appView.hideLoader();
+						app.appView.renderResponseAlert(response);
+					},
+					error: function(application, xhr, options) {
+						$('.uv-install-toggle').removeAttr('disabled')
+						if(url = xhr.getResponseHeader('Location'))
+							window.location = url;
+
+						app.appView.hideLoader();
+						if(xhr.responseJSON) {
+							response = xhr.responseJSON;
+							app.appView.renderResponseAlert(response);
+						}
+					},
+				});
+			},
+			uninstallApplication: function(e) {
+				e.preventDefault();
+				app.appView.showLoader();
+				$(e.target).attr('disabled', 'disabled');
+				self = this;
+				this.model.save({id: this.model.id }, {
+					patch: true,
+					url : "{{ path('helpdesk_member_uninstall_application_xhr') }}",
+					success: function(application, response, options) {
+						$('.uv-enable-app').remove();
+						$('.uv-install-toggle').attr('disabled', false)
+							.addClass('uv-btn-install')
+							.removeClass('uv-btn-uninstall')
+							.html("{{ 'Install'|trans }}");
+
+						$('li[for="configure"]').fadeOut();
+						app.appView.hideLoader();
+						app.appView.renderResponseAlert(response);
+					},
+					error: function(application, xhr, options) {
+						$('.uv-install-toggle').removeAttr('disabled')
+						if(url = xhr.getResponseHeader('Location'))
+							window.location = url;
+
+						app.appView.hideLoader();
+						if(xhr.responseJSON) {
+							response = xhr.responseJSON;
+							app.appView.renderResponseAlert(response);
+						}
+					},
+				});
+			},
+			renderConfigurationView: function() {
+				if (typeof(channelCollection) != 'undefined') {
+					channelCollection.syncData();
+				}
+			},
+			switchToListView: function(e) {
+				e.preventDefault();
+				$('.uv-aside-back').removeClass('edit-back');
+				{% if isSingleChannel %}
+					$('.uv-app-add-channel').remove();
+				{% endif %}
+				$('.uv-app-splash').show();
+				$('.uv-app-list-channels').show();
+				$('.uv-app-add-channel').hide();
+				$('.uv-mandatory-field').hide();
+			},
+			enableApp: function(e) {
+				e.preventDefault();
+				app.appView.showLoader();
+				$(e.target).attr('disabled', 'disabled');
+				self = this;
+        debugger
+				this.model.save({id: this.model.id }, {
+					patch: true,
+					url : "{{ path('app_enable_xhr') }}",
+					success: function(application, response, options) {
+						$('.uv-enable-app').remove();
+						$('li[for="configure"]').fadeIn();
+						app.appView.hideLoader();
+						app.appView.renderResponseAlert(response);
+					},
+					error: function(application, xhr, options) {
+						$('.uv-enable-app').removeAttr('disabled')
+						if(url = xhr.getResponseHeader('Location'))
+							window.location = url;
+
+						app.appView.hideLoader();
+						if(xhr.responseJSON) {
+							response = xhr.responseJSON;
+							app.appView.renderResponseAlert(response);
+						}
+					},
+				});
+			},
+			showVideo: function(e) {
+				$('.uv-play-btn').hide();
+				$('.uv-app-video').addClass('opened');
+				document.querySelector('.uv-app-video video').play();
+				$('.uv-video-wrapper').show();
+			},
+			hideVideo: function(e) {
+				$('.uv-play-btn').show();
+				$('.uv-app-video').removeClass('opened');
+				document.querySelector('.uv-app-video video').pause();
+				$('.uv-video-wrapper').hide();
+			},
+		});
+
+		$(function () {
+			applicationView = new ApplicationView({
+				model: new ApplicationModel(),
+			});
+		});
+	</script>
+
+{% endblock %}

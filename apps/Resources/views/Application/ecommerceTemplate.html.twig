@@ -1,0 +1,60 @@
+<script type="text/template" id="app-splash-template">
+	<div class="uv-app-splash" style="text-align: center;">
+		<img class="uv-app-splash-image" src='{{ asset("bundles/uvdeskcore/images/apps/ecommerce-splash-" ~ application.name|lower|replace({" ": "-"}) ~ ".png") }}' alt="{{ application.name }}">
+		<h2 class="uv-margin-top-10">{{ 'Add Channel'|trans }}</h2>
+		<p>{{ "You haven't added any %app% channel yet, Integrate your %app% Seller Account as a channel to sync Customers and Orders to uvdesk"|trans({'%app%': application.name }) }}</p>
+		<a class="uv-btn add-app-channel">{{ 'New Channel'|trans }}</a>
+	</div>
+</script>
+
+<script type="text/template" id="channel-form-template">
+	<div class="uv-app-add-channel">
+		<!--Instructions-->
+		<div class="uv-instructions-block" style="">
+			{% if application.instruction is defined %}
+				<h3><span class="uv-icon-info uv-margin-right-5"></span>{{ 'Configuring your application:'|trans }}</h3>
+				{{ application.instruction | raw }}
+			{% endif %}
+		</div>
+		<!--//Instructions-->
+		<!--Form-->
+		<form class="uv-app-add-form" method="POST">
+			<h1>
+				<% if ('undefined' == typeof(id)) { %>{{ 'Add Channel'|trans }}<% } else { %>{{ 'Update Channel'|trans }}<% } %>
+			</h1>
+			<div class="uv-element-block">
+				<label class="uv-field-label">{{ 'Name'|trans }}</label>
+				<div class="uv-field-block">
+					<input name="title" class="uv-field" type="text" placeholder="{{ 'Channel Name'|trans }}" value="<% if('undefined' != typeof(title)) print(title); %>">
+				</div>
+				<span class="uv-field-info">{{ 'It will be shown in the list of added channels for recognization purpose only'|trans }}</span>
+			</div>
+			<% details = ('undefined' != typeof(details) ) ? ('object' != typeof(details) ? JSON.parse(details) : details ) : {} %>
+			{% if formFields is defined %}
+				{% for field in formFields %}
+					<div class="uv-element-block">
+						<label class="uv-field-label">{{ field.label }}</label>
+						<div class="uv-field-block">
+							{% if field.type in ['text', 'password'] %}
+								<input name="{{ field.name }}" class="uv-field" type="{{ field.type }}" placeholder="{{ field.placeholder is defined  ? field.placeholder : null }} " value="<% if('undefined' != typeof(details['{{ field.name }}'])) print(details['{{ field.name }}']); %>">
+							{% elseif field.type == 'select'  %}
+								<select class="uv-select" name="{{ field.name }}">
+									{% if field.options is defined %}
+										{% for option, optionValue in field.options %}
+											<option value="{{ option }}" <% if('undefined' != typeof(details['{{ field.name }}']) && "{{ option }}" == details['{{ field.name }}'] ) print(selected="selected"); %> >{{ optionValue }}</option>
+										{% endfor %}
+									{% endif %}
+								</select>
+							{% endif %}
+						</div>
+						<span class="uv-field-info">{{ field.info }}</span>
+					</div>
+				{% endfor %}
+			{% endif %}
+			<div class="uv-action-buttons">
+				<input type="submit" class="uv-btn" id="save-channel" value="<% if ('undefined' == typeof(id)) { %>{{ 'Add Channel'|trans }}<% } else { %>{{ 'Update Channel'|trans }}<% } %>">
+			</div>
+		</form>
+		<!--//Form-->
+	</div>
+</script>
