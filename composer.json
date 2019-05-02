@@ -1,5 +1,5 @@
 {
-    "name": "uvdesk/application-plugin",
+    "name": "uvdesk-test/application-plugin",
     "description": "UVDesk Community Helpdesk Core Framework Bundle",
     "type": "symfony-bundle",
     "license": "MIT",
@@ -21,7 +21,7 @@
         "psr-4": { "Webkul\\UVDesk\\AppBundle\\": "" }
     },
     "extra": {
-        "uvdesk-package-extension": "Webkul\\UVDesk\\CoreBundle\\Package\\Composer",
+        "uvdesk-package-extension": "Webkul\\UVDesk\\AppBundle\\Package\\Composer",
         "branch-alias": {
             "dev-master": "0.1.x-dev"
         }
