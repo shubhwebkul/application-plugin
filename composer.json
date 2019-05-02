@@ -1,5 +1,5 @@
 {
-    "name": "uvdesk/core-framework",
+    "name": "uvdesk/application-plugin",
     "description": "UVDesk Community Helpdesk Core Framework Bundle",
     "type": "symfony-bundle",
     "license": "MIT",
