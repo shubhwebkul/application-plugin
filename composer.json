@@ -1,23 +1,15 @@
 {
     "name": "uvdesk-test/application-plugin",
     "version": "master",
-    "description": "UVDesk Community Helpdesk Core Framework Bundle",
+    "description": "UVDesk Community Helpdesk Apps Framework Bundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
         {
-            "name": "Akshay Kumar",
-            "email": "akshay.kumar758@webkul.com"
+            "name": "Shubham Mehrotra",
+            "email": "shubhammehrotra.symfony@webkul.com"
         }
     ],
-    "require": {
-    },
-    "require-dev": {
-        "symfony/var-dumper": "^3.4",
-        "symfony/web-server-bundle": "^3.4"
-    },
-    "suggest": {
-    },
     "autoload": {
         "psr-4": { "Webkul\\UVDesk\\AppBundle\\": "" }
     },
