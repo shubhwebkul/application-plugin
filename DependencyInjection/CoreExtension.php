@@ -23,7 +23,7 @@ class CoreExtension extends Extension
 
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../apps/Resources/config'));
         $loader->load('services.yaml');
 
         // Register automations conditionally if AutomationBundle has been added as an dependency.
