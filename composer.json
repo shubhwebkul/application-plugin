@@ -23,7 +23,7 @@
     "extra": {
         "uvdesk-package-extension": "Webkul\\UVDesk\\AppBundle\\Package\\Composer",
         "branch-alias": {
-            "dev-master": "0.1.x-dev"
+            "dev-master": "master"
         }
     },
     "minimum-stability": "dev"
