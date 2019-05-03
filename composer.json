@@ -1,5 +1,6 @@
 {
     "name": "uvdesk-test/application-plugin",
+    "version": "dev-master",
     "description": "UVDesk Community Helpdesk Core Framework Bundle",
     "type": "symfony-bundle",
     "license": "MIT",
