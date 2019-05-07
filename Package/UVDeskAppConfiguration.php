@@ -1,15 +1,13 @@
 <?php
 
-namespace Webkul\UVDesk\CoreBundle\Package;
+namespace Webkul\UVDesk\AppBundle\Package;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Webkul\UVDesk\PackageManager\Extensions\HelpdeskExtension;
 use Webkul\UVDesk\PackageManager\ExtensionOptions\HelpdeskExtension\Section as HelpdeskSection;
 
-class UVDeskCoreConfiguration extends HelpdeskExtension
+class UVDeskAppConfiguration extends HelpdeskExtension
 {
-    private $container;
-
     const APPLICATION_SHOPIFY_BRICK_SVG = <<<SVG
 <g id="shopify" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
     <g id="shopify-logo" transform="translate(7.000000, 4.000000)" fill="#FFFFFF" fill-rule="nonzero">
@@ -47,6 +45,7 @@ SVG;
     </g>
 </g>
 SVG;
+
     public function loadDashboardItems()
     {
         return [
@@ -77,5 +76,10 @@ SVG;
                 ],
             ],
         ];
+    }
+
+    public function loadNavigationItems()
+    {
+        return [];
     }
 }

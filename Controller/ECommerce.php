@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\UVDesk\CoreBundle\Controller;
+namespace Webkul\UVDesk\AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;

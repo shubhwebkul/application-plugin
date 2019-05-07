@@ -1,0 +1,7 @@
+uvdesk_apps_member_routing_resources:
+    prefix:   /{_locale}/%uvdesk_site_path.member_prefix%/apps
+    resource: "@UVDeskAppBundle/Apps/Resources/config/routes/uvdesk_apps.yaml"
+    requirements:
+        _locale: %app_locales%
+    defaults:
+        _locale: %locale%

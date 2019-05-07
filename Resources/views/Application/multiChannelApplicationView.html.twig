@@ -21,7 +21,7 @@
 {% elseif application.name == "Translate Content" %}
 	{{ include('WebkulAppBundle:Templates:translateContentTemplate.html.twig') }}
 {% elseif application.name == "EBay" %}
-	{{ include('@UVDeskCore/Application/Templates/ebayTemplate.html.twig') }}
+	{{ include('@UVDeskApp/Application/Templates/ebayTemplate.html.twig') }}
 {% elseif application.name == "Disqus Engage" %}
 	{{ include('WebkulAppBundle:Templates:disqusEngageTemplate.html.twig') }}
 {% elseif application.name == "Youtube" %}
@@ -29,7 +29,7 @@
 {% elseif application.dependencyName == "shopify extension" %}
 	{{ include('WebkulAppBundle:Templates:shopifyHelpdeskTemplate.html.twig') }}
 {% elseif application.dependencyName == "ecommerce" %}
-	{{ include('@UVDeskCore/Application/ecommerceTemplate.html.twig') }}
+	{{ include('@UVDeskApp/Application/ecommerceTemplate.html.twig') }}
 {% elseif application.dependencyName == "sso" %}
 	{{ include('WebkulAppBundle:Templates:ssoTemplate.html.twig') }}
 {% elseif application_service.checkTemplateExists( application.name|slice(0,1)|lower ~ application.name|title|slice(1)|replace({' ':''}) ~ 'Template.html.twig' ) %}

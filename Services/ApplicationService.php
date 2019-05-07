@@ -3,11 +3,12 @@
 namespace Webkul\UVDesk\AppBundle\Services;
 
 use Doctrine\ORM\EntityManager;
-use Webkul\UVDesk\CoreBundle\Entity\Ticket;
-use Webkul\UVDesk\CoreBundle\Entity\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Webkul\UVDesk\CoreBundle\Entity\Ticket;
+use Webkul\UVDesk\CoreBundle\Entity\Application;
 
 class ApplicationService
 {

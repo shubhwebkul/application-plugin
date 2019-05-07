@@ -1,92 +1,92 @@
 # # Base application routes
 helpdesk_member_application_base:
-    path:     /apps
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::renderApplicationList
+    path:     /
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::renderApplicationList
 
 helpdesk_member_install_application_xhr:
-    path:     /apps/install
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::installXhr
+    path:     /install
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::installXhr
 
 helpdesk_member_uninstall_application_xhr:
-    path:     /apps/uninstall
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::uninstallXhr
+    path:     /uninstall
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::uninstallXhr
 
 # app load route , keep this at end of file
 helpdesk_member_load_application:
-    path:     /apps/{applicationRouteName}/{activeTab}
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::loadApplication
+    path:     /{applicationRouteName}/{activeTab}
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::loadApplication
     defaults: { panelId: 'apps', activeTab: '' }
 
+# app_list_xhr:
+#     path:     /xhr
+#     defaults: { _controller: WebkulAppBundle:Application:listXhr }
+
+# development routes
 helpdesk_member_load_application_shopify:
-    path:     /apps/shopify
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::loadApplication
+    path:     /shopify
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::loadApplication
     defaults: { panelId: 'apps' }
 
 helpdesk_member_load_application_eBay:
-    path:     /apps/eBay
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::loadApplication
+    path:     /eBay
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::loadApplication
     defaults: { panelId: 'apps' }
 
-# app_list_xhr:
-#     path:     /apps/xhr
-#     defaults: { _controller: WebkulAppBundle:Application:listXhr }
-
-
 app_enable_xhr:
-    path:     /apps/enable
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::enableXhr
+    path:     /enable
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::enableXhr
 
 app_save_application_channel:
-    path:     /apps/{applicationRouteName}/channel/save/{channelId}
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::createApplicationChannel
+    path:     /{applicationRouteName}/channel/save/{channelId}
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::createApplicationChannel
     defaults: { channelId: 0 }
     requirements:
         channelId: '\d+'
 
 app_save_application_settings:
-    path:     /apps/{applicationRouteName}/channel/save/settings/{channelId}
+    path:     /{applicationRouteName}/channel/save/settings/{channelId}
     defaults: { _controller: WebkulAppBundle:Application:saveApplicationChannelSetting, channelId: 0 }
     requirements:
         channelId: '\d+'
 
 app_remove_application_channel:
-    path:     /apps/shopify/channel/remove/{channelId}
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::removeApplicationChannel
+    path:     /shopify/channel/remove/{channelId}
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::removeApplicationChannel
     defaults: { channelId: 0 }
     requirements:
         channelId: '\d+'
 
 app_fetch_application_collection:
-    path:     /apps/{applicationRouteName}/collection/fetch
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::getApplicationChannelCollectionXhr
+    path:     /{applicationRouteName}/collection/fetch
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::getApplicationChannelCollectionXhr
 
 app_process_application_external_redirect:
-    path:     /apps/{applicationRouteName}/handle/redirect
-    controller: Webkul\UVDesk\CoreBundle\Controller\Application::applicationExternalRedirect
+    path:     /{applicationRouteName}/handle/redirect
+    controller: Webkul\UVDesk\AppBundle\Controller\Application::applicationExternalRedirect
 
 app_application_medium:
-    path:     /apps/{applicationRouteName}/medium/{apiEndpoint}
+    path:     /{applicationRouteName}/medium/{apiEndpoint}
     defaults: { _controller: WebkulAppBundle:Application:applicationAPIEndpoint }
 
 # # Application Routes
 # app_route_ecommerce:
 #     resource: "@WebkulAppBundle/Resources/config/route/ecommerce.yml"
-#     prefix:   /apps/
+#     prefix:   /
 
 # customer_tickets_xhr:
-#     path:   /apps/customer-tickets/xhr
+#     path:   /customer-tickets/xhr
 #     defaults: { _controller: WebkulAppBundle:Application:customerTicketsXhr }
 
 # search_company_articles:
-#     path:   /apps/articles/search
+#     path:   /articles/search
 #     defaults: { _controller: WebkulAppBundle:Application:searchCompanyArticles }
 
 # app_google_calendar_xhr:
-#     path:   /apps/google-calendar/{incrementId}/xhr
+#     path:   /google-calendar/{incrementId}/xhr
 #     defaults: { _controller: WebkulAppBundle:Application:customApiXhr }
 
 # app_google_calendar_edit_xhr:
-#     path:   /apps/google-calendar/{incrementId}/xhr/{eventId}
+#     path:   /google-calendar/{incrementId}/xhr/{eventId}
 #     defaults: { _controller: WebkulAppBundle:Application:customApiXhr }
 #     methods: [PUT, DELETE]
 
@@ -95,12 +95,12 @@ app_application_medium:
 #     defaults: { _controller: WebkulAppBundle:NewFeature:newFeaturesXhr, activeTab: '' }
 
 # app_data_xhr:
-#     path:     /apps/{applicationRouteName}/xhr
+#     path:     /{applicationRouteName}/xhr
 #     defaults: { _controller: WebkulAppBundle:Application:getAppData }
 
 # # app load route , keep this at end of file
 # app_load_application:
-#     path:     /apps/{applicationRouteName}/{activeTab}
+#     path:     /{applicationRouteName}/{activeTab}
 #     defaults: { _controller: WebkulAppBundle:Application:loadApplication, activeTab: '' }
 
 # # test_test_test:

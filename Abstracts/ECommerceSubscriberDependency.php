@@ -1,11 +1,12 @@
 <?php
 
-namespace Webkul\UVDesk\CoreBundle\Abstracts;
+namespace Webkul\UVDesk\AppBundle\Abstracts;
 
-use Webkul\UVDesk\CoreBundle\Event\ApplicationEvent;
-use Webkul\UVDesk\CoreBundle\Entity\ECommerceChannel;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Webkul\UVDesk\AppBundle\Event\ApplicationEvent;
+use Webkul\UVDesk\CoreBundle\Entity\ECommerceChannel;
 
 abstract class ECommerceSubscriberDependency
 {

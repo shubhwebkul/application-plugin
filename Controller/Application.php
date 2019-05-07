@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\UVDesk\CoreBundle\Controller;
+namespace Webkul\UVDesk\AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Webkul\UVDesk\CoreBundle\Event\ApplicationEvent;
-use Webkul\UVDesk\CoreBundle\Extras\Snippet\TwigConfiguration;
-use Webkul\UVDesk\CoreBundle\EventDispatcher\AppEventDispatcher;
+use Webkul\UVDesk\AppBundle\Event\ApplicationEvent;
+use Webkul\UVDesk\AppBundle\Extras\Snippet\TwigConfiguration;
+use Webkul\UVDesk\AppBundle\EventDispatcher\AppEventDispatcher;
 
 class Application extends Controller
 {
@@ -61,7 +61,7 @@ class Application extends Controller
         // $appVideos = $this->get('application.service')->getAppVideos($application);
         // $this->appendTwigResponse('videos', $appVideos, false);
 
-        return $this->render('@UVDeskCore/Application/applicationDetail.html.twig', $this->getTwigResponse());
+        return $this->render('@UVDeskApp/Application/applicationDetail.html.twig', $this->getTwigResponse());
     }
 
     /**
@@ -220,5 +220,4 @@ class Application extends Controller
         $eventResponse = $applicationEvent->getEventResponse();
         return !empty($eventResponse['response']) ? $eventResponse['response'] : new RedirectResponse($this->generateUrl('helpdesk_member_load_application', ['applicationRouteName' => $applicationRouteName, 'activeTab'=> 'configure']));
     }
-
 }

@@ -1,4 +1,0 @@
-services:
-    Webkul\UVDesk\CoreBundle\Package\UVDeskCoreConfiguration:
-        public: true
-        arguments: ['@service_container']

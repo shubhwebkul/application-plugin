@@ -1,0 +1,3 @@
+twig:
+    globals:
+        application_service: '@application.service'

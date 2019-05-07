@@ -1,9 +1,9 @@
 <?php
 
-namespace Webkul\UVDesk\CoreBundle\Abstracts;
+namespace Webkul\UVDesk\AppStore\Ecommerce\Shopify\Abstracts;
 
 /**
- * This class contains credentials required in various ecommerce channels.
+ * This class contains credentials required for shopify channel.
  *
  */
 abstract class ECommerceCredential

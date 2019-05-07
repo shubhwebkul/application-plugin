@@ -239,9 +239,9 @@
 
 	{% set isSingleChannel =  (application.name in ['Social Login', 'Magento SSO', 'Magento 2 SSO', 'Wordpress SSO', 'Opencart SSO', 'Seller Buyer Chat'] or application.dependencyName == 'uvdesk helpdesk') ? true : false  %}
 	{% if isSingleChannel %}
-		{{ include('@UVDeskCore//Application//singleChannelApplicationView.html.twig') }}
+		{{ include('@UVDeskApp//Application//singleChannelApplicationView.html.twig') }}
 	{% else %}
-		{{ include('@UVDeskCore//Application//multiChannelApplicationView.html.twig') }}
+		{{ include('@UVDeskApp//Application//multiChannelApplicationView.html.twig') }}
 	{% endif %}
 
 	<script>

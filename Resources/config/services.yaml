@@ -1,5 +1,5 @@
 services:
     application.service:
         public: true
-        class: Webkul\UVDesk\CoreBundle\Services\ApplicationService
+        class: Webkul\UVDesk\AppBundle\Services\ApplicationService
         arguments: ['@service_container', '@request_stack', '@doctrine.orm.entity_manager']
